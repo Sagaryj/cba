@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="hindi">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Chocolate Shop</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7e7ce;
+        }
+        header {
+            background: #6b3e26;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        #three-canvas {
+            width: 100vw;
+            height: 50vh;
+            display: block;
+        }
+        .products {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .product {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 1rem;
+            width: 200px;
+            text-align: center;
+        }
+        .buy-btn {
+            background: #6b3e26;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>3D Chocolate Shop</h1>
+        <p>Experience chocolates in 3D and shop your favorites!</p>
+    </header>
+    <canvas id="three-canvas"></canvas>
+    <section class="products">
+        <div class="product">
+            <h2>Classic Bar</h2>
+            <p>Rich milk chocolate</p>
+            <p>$2.99</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+        <div class="product">
+            <h2>Dark Delight</h2>
+            <p>70% dark chocolate</p>
+            <p>$3.49</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+        <div class="product">
+            <h2>Nutty Crunch</h2>
+            <p>Chocolate with hazelnuts</p>
+            <p>$3.99</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
+    <script>
+        // Basic 3D chocolate bar using Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / (window.innerHeight/2), 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight / 2);
+
+        // Chocolate bar geometry
+        const geometry = new THREE.BoxGeometry(2, 0.5, 1);
+        const material = new THREE.MeshPhongMaterial({ color: 0x6b3e26 });
+        const chocolateBar = new THREE.Mesh(geometry, material);
+        scene.add(chocolateBar);
+
+        // Lighting
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            chocolateBar.rotation.y += 0.01;
+            chocolateBar.rotation.x += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / (window.innerHeight/2);
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight / 2);
+        });
+    </script>
+</body>
+</html>
